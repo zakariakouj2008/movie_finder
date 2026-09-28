@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Finder</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 80px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    input {
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 12px 24px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+    }
+
+    #status {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>🎬 Find This Movie</h2>
+
+  <input type="file" id="image" accept="image/*">
+
+  <br>
+
+  <button onclick="sendImage()">
+    🔎 Search Movie
+  </button>
+
+  <p id="status"></p>
+
+  <script>
+
+    async function sendImage() {
+
+      const fileInput = document.getElementById("image");
+      const status = document.getElementById("status");
+
+      const file = fileInput.files[0];
+
+      if (!file) {
+        status.innerText = "❌ اختار صورة أولاً";
+        return;
+      }
+
+      status.innerText = "⏳ كنصيفط الصورة...";
+
+      const formData = new FormData();
+
+      formData.append("image", file);
+
+      const webhook =
+        "https://hook.eu1.make.com/fyc5rlniw3axeere56oxckgne8b817g1";
+
+      try {
+
+        const response = await fetch(webhook, {
+          method: "POST",
+          body: formData
+        });
+
+        if (response.ok) {
+
+          status.innerText =
+            "✅ الصورة تصيفطات لـ Make بنجاح!";
+
+        } else {
+
+          status.innerText =
+            "❌ وقع مشكل فإرسال الصورة.";
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.innerText =
+          "❌ ما قدرناش نتاصلو بـ Make.";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
